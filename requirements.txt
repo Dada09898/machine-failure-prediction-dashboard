@@ -3,7 +3,8 @@ numpy
 scikit-learn
 mlflow
 joblib
-streamlit
+streamlit==1.19.0
+altair==4.2.2
 shap
 matplotlib
 plotly
