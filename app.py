@@ -7,7 +7,8 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 import streamlit.components.v1 as components
-
+import matplotlib
+matplotlib.use("Agg")
 # ------------------------------------------------
 # PAGE CONFIG
 # ------------------------------------------------
@@ -497,27 +498,32 @@ if st.session_state.get("predict", False):
             )
         st.subheader("Feature Interaction Heatmap")
 
-        interaction_values = shap.TreeExplainer(model).shap_interaction_values(sample_data)
+        try:
 
-        # binary classifier case
-        if isinstance(interaction_values,list):
-            interaction_values = interaction_values[1]
+            interaction_values = shap.TreeExplainer(model).shap_interaction_values(sample_data)
 
-        interaction_matrix = np.abs(interaction_values).mean(axis=0)
+            if isinstance(interaction_values, list):
+                interaction_values = interaction_values[1]
 
-       
+            interaction_matrix = np.abs(interaction_values).mean(axis=0)
 
-        # 🔧 FIX
-        if interaction_matrix.ndim == 3:
-            interaction_matrix = interaction_matrix[:,:,0]
+            if interaction_matrix.ndim == 3:
+                interaction_matrix = interaction_matrix[:,:,0]
 
-        fig, ax = plt.subplots(figsize=(8,6))
+            fig, ax = plt.subplots(figsize=(8,6))
 
-        plt.imshow(interaction_matrix,cmap="coolwarm")
-        plt.colorbar()
+            im = ax.imshow(interaction_matrix, cmap="coolwarm")
 
-        plt.xticks(range(len(sample_data.columns)),sample_data.columns,rotation=90)
-        plt.yticks(range(len(sample_data.columns)),sample_data.columns)
+            fig.colorbar(im)
 
-        st.pyplot(fig)
-        plt.close(fig)
+            ax.set_xticks(range(len(sample_data.columns)))
+            ax.set_xticklabels(sample_data.columns, rotation=90)
+
+            ax.set_yticks(range(len(sample_data.columns)))
+            ax.set_yticklabels(sample_data.columns)
+
+            st.pyplot(fig)
+            plt.close(fig)
+
+        except Exception as e:
+            st.warning("Interaction heatmap could not be generated.")
