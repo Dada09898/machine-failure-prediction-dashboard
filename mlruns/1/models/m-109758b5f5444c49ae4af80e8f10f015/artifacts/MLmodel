@@ -1,0 +1,23 @@
+artifact_path: file:C:/Users/user/Downloads/Tata_steel_project/mlruns/1/models/m-109758b5f5444c49ae4af80e8f10f015/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.10
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.8.0
+    skops_trusted_types: null
+mlflow_version: 3.10.1
+model_id: m-109758b5f5444c49ae4af80e8f10f015
+model_size_bytes: 386958
+model_uuid: m-109758b5f5444c49ae4af80e8f10f015
+prompts: null
+run_id: 75e0b8eca7004a62b2536dfedf5432a4
+utc_time_created: '2026-03-12 10:03:00.856048'
